@@ -10,24 +10,17 @@ public final class Iterators {
     private Iterators(){}
     public static<T> Iterator<T> concat(Iterator<T> it1, Iterator<T> it2){
         return new Iterator<T>() {
-            boolean switched = false;
-            Iterator<T> it = it1;
             @Override
             public boolean hasNext () {
-                return it.hasNext();
+                return it1.hasNext() || it2.hasNext();
             }
 
             @Override
             public T next () {
-                if(!switched)
-                    if(!hasNext()){
-                        it = it2;
-                        switched = true;
-                    }
-
-                if(it.hasNext()) return it.next();
-
-                throw new UnsupportedOperationException();
+                if(it1.hasNext()){
+                    return it1.next();
+                }
+                return it2.next(); // Will throw a NoSuchElementException if there is no next element so no need to throw one ourselves
             }
         };
     }
@@ -41,23 +34,17 @@ public final class Iterators {
 
             @Override
             public R next () {
-                if(it.hasNext())
-                    return fnc.apply(it.next());
-
-                throw new UnsupportedOperationException();
+                return fnc.apply(it.next()); //Same as above
             }
         };
     }
 
     static <T extends Comparable<T>> T max(Iterator<T> it){
-
-        if(!it.hasNext()) throw new NoSuchElementException();
-        T max = it.next();
+        T max = it.next(); //Will throw a NoSuchElementException if there is no next element
         while (it.hasNext()){
             T next = it.next();
             if(max.compareTo(next) < 0) max = next;
         }
         return max;
     }
-
 }
