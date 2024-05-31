@@ -38,7 +38,6 @@ public final class VarInputStream implements AutoCloseable{
                 value += v<<(--remaining * 8);
             }
         }
-        stream.close();
         return value;
     }
 
