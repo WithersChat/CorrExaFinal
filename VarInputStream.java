@@ -32,7 +32,7 @@ public final class VarInputStream implements AutoCloseable{
                     mask = 0;
                 } else if(remaining != 0 && v >> 7 == 0) throw new IOException();
 
-                value += (v>>(remaining+1))<<(remaining * 8);
+                value += ((v&mask)>>(remaining+1))<<(remaining * 8);
             } else {
                 if(remaining == 3 && v >> 7==0)  throw new IOException();
                 value += v<<(--remaining * 8);
