@@ -11,10 +11,9 @@ public final class SStringBuilder {
         if (i < 0 || i > length())
             throw new IndexOutOfBoundsException();
         if (gapSize == 0) {
-            int oldLength = length();
             char[] newBuffer = new char[length() * 2];
-            gapSize = oldLength;
-            System.arraycopy(buffer, 0, newBuffer, 0, oldLength);
+            gapSize = buffer.length;
+            System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
             buffer = newBuffer;
         }
         if (gapPos != i) {
@@ -23,11 +22,10 @@ public final class SStringBuilder {
             } else  {
                 System.arraycopy(buffer, gapPos + gapSize, buffer, gapPos, i - gapPos);
             }
-            gapPos = i;
         }
         buffer[i] = c;
         --gapSize;
-        ++gapPos;
+        gapPos = i + 1;
 
         return this;
     }
