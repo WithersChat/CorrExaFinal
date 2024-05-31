@@ -20,8 +20,10 @@ public final class Iterators {
             @Override
             public T next () {
                 if(!switched)
-                    if(!hasNext())
+                    if(!hasNext()){
                         it = it2;
+                        switched = true;
+                    }
 
                 if(it.hasNext()) return it.next();
 
